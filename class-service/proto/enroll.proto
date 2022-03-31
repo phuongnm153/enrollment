@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+service EnrollService {
+    rpc List (Enroll) returns (EnrollList) {}
+    rpc Insert (Enroll) returns (Enroll) {}
+    rpc Confirm (enrollId) returns (Enroll) {}
+}
+
+message Enroll {
+    int32 id = 1;
+    int32 studentId = 2;
+    int32 classId = 3;
+    int32 status = 4;
+}
+
+message EnrollList {
+   repeated Enroll enrolls = 1;
+}
+
+message enrollId {
+    string id = 1;
+}

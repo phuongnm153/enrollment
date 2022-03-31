@@ -1,0 +1,25 @@
+{
+  "name": "base-api",
+  "version": "0.0.1",
+  "description": "This is base service of app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo test",
+    "dev": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@grpc/proto-loader": "^0.6.9",
+    "apollo-server-express": "^3.6.7",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.3",
+    "graphql-import-files": "^1.0.18",
+    "grpc": "^1.24.11",
+    "lodash": "^4.17.21",
+    "winston": "^3.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}

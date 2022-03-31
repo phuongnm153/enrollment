@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+service ClassService {
+    rpc List (Class) returns (ClassList) {}
+    rpc Insert (Class) returns (Class) {}
+}
+
+message Class {
+    int32 _id = 1;
+    string name = 2;
+    int32  courseId = 3;
+}
+
+message ClassList {
+   repeated Class classes = 1;
+}
