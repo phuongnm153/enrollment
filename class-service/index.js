@@ -6,6 +6,8 @@ const classProto = grpc.loadPackageDefinition(packageDefinition);
 const mongoose = require('mongoose');
 const Class = require("./models/Class");
 const {initClient} = require("./grpc");
+const StudentInClass = require("./models/StudentInClass");
+const {produce} = require("./rb/send");
 
 async function connectDB() {
     try {
@@ -29,8 +31,17 @@ async function main() {
         },
         insert: async (call, callback) => {
             const newClass = await Class.create(call.request)
+            //send to queue
+            if (newClass) {
+                let queueProcess = await produce('createClassMsg', newClass)
+                console.log(queueProcess)
+            }
             callback(null, newClass)
-        }
+        },
+        enroll: async (call, callback) => {
+            const newStudentClass = await StudentInClass.create(call.request)
+            callback(null, newStudentClass)
+        },
     })
     let address = `${config.host}:${config.port}`;
     server.bindAsync(address, grpc.ServerCredentials.createInsecure(), () => {

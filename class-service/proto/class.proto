@@ -3,6 +3,7 @@ syntax = "proto3";
 service ClassService {
     rpc List (Class) returns (ClassList) {}
     rpc Insert (Class) returns (Class) {}
+    rpc Enroll (EnrollInfo) returns (EnrollID) {}
 }
 
 message Class {
@@ -13,4 +14,13 @@ message Class {
 
 message ClassList {
    repeated Class classes = 1;
+}
+
+message EnrollInfo {
+    int32 studentId = 1;
+    int32 classId = 2;
+}
+
+message EnrollID {
+    int32 id = 1;
 }

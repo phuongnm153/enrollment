@@ -26,9 +26,7 @@ const create = (req, res) => {
 }
 
 const confirm = (req, res) => {
-    const { id } = req.params
-    console.log(req.params)
-    client.enrollService.confirm(id, (error, result) => {
+    client.enrollService.confirm(req.params, (error, result) => {
         if (!error) {
             console.log('successfully confirm a enroll', result)
             res.json(result)

@@ -9,4 +9,5 @@ module.exports = {
             name: "ClassService"
         }
     },
+    rabbitmq: "amqp://localhost:5672"
 }

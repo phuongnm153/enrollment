@@ -8,5 +8,6 @@ module.exports = {
             name: "EnrollService"
         }
     },
-    DATABASE_URI: "mongodb://localhost:27017/class-service"
+    DATABASE_URI: "mongodb://localhost:27017/class-service",
+    rabbitmq: "amqp://localhost:5672"
 }

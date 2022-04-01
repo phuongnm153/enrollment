@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@grpc/proto-loader": "^0.6.9",
+    "amqplib": "^0.8.0",
     "grpc": "^1.24.11",
     "lodash": "^4.17.21",
     "mongodb-autoincrement": "^1.0.1",

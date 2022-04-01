@@ -2,7 +2,7 @@ const grpc = require('grpc')
 const config = require('./config')
 const logger = require('./utils/logger')
 const protoLoader = require('@grpc/proto-loader')
-const {initClient} = require("./grpc")
+const {initClient, client} = require("./grpc")
 const Enrollment = require("./models/Enrollment")
 const packageDefinition = protoLoader.loadSync('./proto/enroll.proto')
 const enrollProto = grpc.loadPackageDefinition(packageDefinition)
@@ -37,12 +37,21 @@ async function main() {
             callback(null, newEnrollment)
         },
         confirm: async (call, callback) => {
-            console.log(call.request)
             let params = {
                 _id: call.request.id,
             }
-            const enroll = await Enrollment.updateOne(params, { status: 1 })
-            callback(null, enroll)
+            Enrollment.findOneAndUpdate(params, { status: 1 }, {}, function (err, enroll) {
+                if (err) callback(null, {id : 0})
+                client.classService.enroll(enroll, (error, result) => {
+                    if (!error) {
+                        console.log('successfully enroll success', result)
+                        callback(null, result)
+                    } else {
+                        console.error(error)
+                        callback(null, {id : 0})
+                    }
+                })
+            })
         }
     })
     let address = `${config.host}:${config.port}`;

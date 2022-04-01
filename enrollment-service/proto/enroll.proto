@@ -3,7 +3,7 @@ syntax = "proto3";
 service EnrollService {
     rpc List (Enroll) returns (EnrollList) {}
     rpc Insert (Enroll) returns (Enroll) {}
-    rpc Confirm (enrollId) returns (Enroll) {}
+    rpc Confirm (enrollId) returns (enrollId) {}
 }
 
 message Enroll {
@@ -18,5 +18,5 @@ message EnrollList {
 }
 
 message enrollId {
-    string id = 1;
+    int32 id = 1;
 }
