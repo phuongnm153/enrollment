@@ -1,3 +1,6 @@
+## Giới thiệu
+Đây là project demo nodejs cấu trúc microservice có dùng gRPC và RabbitMq để tương tác giữa client với service, service với service
+
 ## List thư viện
 
 Trước khi sử dụng bộ core này bạn cần biết project sử dụng những gì.
@@ -8,7 +11,7 @@ Trước khi sử dụng bộ core này bạn cần biết project sử dụng n
 
 ## Yêu cầu hệ thống
 
-- Node >= 10.
+- Node >= 10
 
 ## Hướng dẫn cài đặt
 
