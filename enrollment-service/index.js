@@ -7,7 +7,7 @@ const Enrollment = require("./models/Enrollment")
 const packageDefinition = protoLoader.loadSync('./proto/enroll.proto')
 const enrollProto = grpc.loadPackageDefinition(packageDefinition)
 const mongoose = require('mongoose')
-initClient(config.grpc)
+const {workerRB} = require("./rb/worker");
 
 async function connectDB() {
     try {
@@ -19,7 +19,9 @@ async function connectDB() {
 }
 
 async function main() {
-    await connectDB().catch(console.dir);
+    initClient(config.grpc)
+    await connectDB().catch(console.dir)
+    workerRB()
     let server = new grpc.Server();
     server.addService(enrollProto.EnrollService.service, {
         list: async (_, callback) => {

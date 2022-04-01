@@ -1,13 +1,19 @@
 const mongoose = require('mongoose');
+const autoIncrement = require('mongoose-auto-increment')
+const config = require("../config");
 
-const { Schema } = mongoose;
+let connection = mongoose.createConnection(config.DATABASE_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+autoIncrement.initialize(connection)
 
-const classSchema = new Schema({
-    id: Number,
+const classSchema = new mongoose.Schema({
     name: String,
     courseId: Number
 });
 
+classSchema.plugin(autoIncrement.plugin, { model: 'classes', startAt: 1 })
 const Class = mongoose.model('classes', classSchema);
 
 module.exports = Class;
