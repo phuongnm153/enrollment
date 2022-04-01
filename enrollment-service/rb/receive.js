@@ -1,22 +1,28 @@
-const amqplib = require('amqplib');
+const amqp = require('amqplib/callback_api');
+const config = require("../config");
+const Class = require("./models/Class");
 
-const consume = async (config) => {
-    var conn = await amqplib.connect(amqp_url, "heartbeat=60");
-    var ch = await conn.createChannel()
-    var q = 'test_queue';
-    await conn.createChannel();
-    await ch.assertQueue(q, {durable: true});
-    await ch.consume(q, function (msg) {
-        console.log('amqplib: consumed message: ' + msg.content.toString());
-        ch.ack(msg);
-        ch.cancel('myconsumer');
-    }, {consumerTag: 'myconsumer'});
-    setTimeout(function () {
-        ch.close();
-        conn.close();
-    }, 500);
-}
+amqp.connect(config.rabbitmq, function(error, connection) {
+    connection.createChannel(function(error, channel) {
+        const queue = 'createClassMsg';
 
-module.exports = {
-    consume
-}
+        channel.assertQueue(queue, {
+            durable: true
+        });
+        channel.prefetch(1);
+        console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
+        channel.consume(queue, async function (msg) {
+            let dataClass = JSON.parse(msg)
+            dataClass.id = dataClass._id
+            delete dataClass._id
+            const newClass = await Class.create(dataClass)
+            console.log(" [x] Received %s", newClass);
+            setTimeout(function () {
+                console.log(" [x] Done");
+                channel.ack(msg);
+            }, 1000);
+        }, {
+            noAck: false
+        });
+    });
+});

@@ -3,30 +3,25 @@ const config = require("../config");
 
 const produce = async (queueName, data) => {
     console.log("Publishing");
-    const conn = await amqplib.connect(config.rabbitmq, function(error0, connection) {
-        if (error0) {
-            throw error0;
-        }
-        connection.createChannel(function(error1, channel) {
-            if (error1) {
-                throw error1;
-            }
+    try {
+        const conn = await amqplib.connect(config.rabbitmq);
+        const channel = await conn.createChannel();
+        const msg = JSON.stringify(data);
 
-            const msg = JSON.stringify(data);
-
-            channel.assertQueue(queueName, {
-                durable: false
-            });
-            channel.sendToQueue(queueName, Buffer.from(msg));
-
-            console.log(" [x] Sent %s", msg);
+        channel.assertQueue(queueName, {
+            durable: true
         });
-        setTimeout(function() {
-            connection.close();
-            process.exit(0);
-        }, 500);
-    })
-    return conn
+        channel.sendToQueue(queueName, Buffer.from(msg), {
+            persistent: true
+        });
+
+        console.log(" [x] Sent %s", msg);
+        setTimeout( function()  {
+            channel.close();
+            conn.close();},  500 );
+    } catch (e) {
+        console.log('send rb error' + e)
+    }
 }
 
 module.exports = {

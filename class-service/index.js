@@ -33,9 +33,9 @@ async function main() {
             const newClass = await Class.create(call.request)
             //send to queue
             if (newClass) {
-                let queueProcess = await produce('createClassMsg', newClass)
-                console.log(queueProcess)
+                await produce('createClassMsg', newClass)
             }
+            console.log(newClass)
             callback(null, newClass)
         },
         enroll: async (call, callback) => {
