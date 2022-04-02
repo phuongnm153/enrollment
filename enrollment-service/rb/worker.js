@@ -15,6 +15,7 @@ const workerRB = () => {
             channel.consume(queue, async function (msg) {
                 try {
                     let dataClass = JSON.parse(msg.content.toString())
+                    dataClass.id = dataClass._id
                     delete dataClass._id
                     console.log(dataClass)
                     const newClass = await Class.create(dataClass)

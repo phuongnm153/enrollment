@@ -9,6 +9,7 @@ let connection = mongoose.createConnection(config.DATABASE_URI, {
 autoIncrement.initialize(connection)
 
 const classSchema = new mongoose.Schema({
+    id: Number,
     name: String,
     courseId: Number
 });
